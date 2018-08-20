@@ -2,20 +2,20 @@
 
 ## 概要
 
-[ニフティクラウドmobile backend](http://mb.cloud.nifty.com/)のプッシュ通知・位置情報検索を利用して、位置情報に連動したプッシュ通知を配信するO2Oアプリを作成するチュートリアルです
+[ニフクラ mobile backend](http://mb.cloud.nifty.com/)のプッシュ通知・位置情報検索を利用して、位置情報に連動したプッシュ通知を配信するO2Oアプリを作成するチュートリアルです
 
 <img src="/readme-img/demo_app_flow.png" alt="アプリの概要">
 
 ## 事前準備
 
-- ニフティクラウド mobile backendの無料アカウント
+- ニフクラ  mobile backendの無料アカウント
 - Android Studio
  - SDK Managerを使って以下のライブラリをインストールしてください
   - Android Support Library
   - Google Play Service
 - 検証用のAndroidデバイス
 
-## ニフティクラウド mobile backendとは
+## ニフクラ  mobile backendとは
 
 mBaaS（mobile backend as a Service）とは、スマートフォンアプリでよく利用される汎用的な機能をクラウドから提供するサービスです
 
@@ -40,10 +40,10 @@ mBaaS（mobile backend as a Service）とは、スマートフォンアプリで
 
 下記リンクをクリックしてプロジェクトをダウンロードしてください▼
 
-__[サンプルプロジェクト](https://github.com/NIFTYCloud-mbaas/GeolocationPush_android/archive/masked_for_hands_on.zip)__
+__[サンプルプロジェクト](https://github.com/NIFCloud-mbaas/GeolocationPush_android/archive/masked_for_hands_on.zip)__
 
 - 参考：完成品プロジェクトもご用意しています
- - [完成品](https://github.com/NIFTYCloud-mbaas/GeolocationPush_android/archive/master.zip)
+ - [完成品](https://github.com/NIFCloud-mbaas/GeolocationPush_android/archive/master.zip)
 
 #### サンプルプロジェクトで実施済みなこと
 
@@ -58,7 +58,7 @@ __[サンプルプロジェクト](https://github.com/NIFTYCloud-mbaas/Geolocati
 
 ### アプリ作成
 
-- [ニフティクラウド mobile backend](http://mb.cloud.nifty.com)にログインしてアプリを作成
+- [ニフクラ  mobile backend](http://mb.cloud.nifty.com)にログインしてアプリを作成
  - 以下のアプリ作成完了画面が表示されればOKです
 
 <img src="/readme-img/applicationCreated.png" alt="mobile backendでのアプリ作成完了画面">
@@ -102,7 +102,7 @@ Google Cloud Messaging for Androidを有効にしてください
 
 <img src="/readme-img/create_api_key_3.png" alt="GCM用のキー作成画面3">
 
-ニフティクラウド mobile backendのダッシュボードに戻ってキーを設定します
+ニフクラ  mobile backendのダッシュボードに戻ってキーを設定します
 
 アプリ設定メニューからプッシュ通知の設定を開いてください
 
