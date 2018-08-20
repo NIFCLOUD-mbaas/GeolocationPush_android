@@ -2,7 +2,7 @@
 
 ## 概要
 
-[ニフクラ mobile backend](http://mb.cloud.nifty.com/)のプッシュ通知・位置情報検索を利用して、位置情報に連動したプッシュ通知を配信するO2Oアプリを作成するチュートリアルです
+[ニフクラ mobile backend](https://mbaas.nifcloud.com/)のプッシュ通知・位置情報検索を利用して、位置情報に連動したプッシュ通知を配信するO2Oアプリを作成するチュートリアルです
 
 <img src="/readme-img/demo_app_flow.png" alt="アプリの概要">
 
