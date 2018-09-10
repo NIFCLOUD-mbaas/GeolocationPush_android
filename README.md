@@ -160,21 +160,6 @@ installation.getRegistrationIdInBackground("YOUR_PROJECT_NUMBER", new DoneCallba
 <uses-permission android:name="biz.ncmb.geolocationpush.permission.C2D_MESSAGE" />
 ```
 
-- receiverを定義
- - サンプルプロジェクトでは実施済みです
-
-```xml
-<receiver
-    android:name="com.google.android.gms.gcm.GcmReceiver"
-    android:exported="true"
-    android:permission="com.google.android.c2dm.permission.SEND">
-    <intent-filter>
-        <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-        <category android:name="biz.ncmb.geolocationpush"/>
-    </intent-filter>
-</receiver>
-```
-
 - GcmListenerServiceを定義
  - 今回は受信処理をカスタマイズするので、クラスを別で用意します
  - サンプルプロジェクトでは実施済みです
@@ -184,7 +169,7 @@ installation.getRegistrationIdInBackground("YOUR_PROJECT_NUMBER", new DoneCallba
     android:name="biz.ncmb.geolocationpush.CustomGcmListenerService"
     android:exported="false">
     <intent-filter>
-        <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+        <action android:name="com.google.firebase.MESSAGING_EVENT"/>
     </intent-filter>
 </service>
 ```
@@ -223,20 +208,20 @@ GcmListenerServiceを拡張し、`onMessageReceived`メソッドを上書きし�
 
 ```java
 @Override
+public void onMessageReceived(RemoteMessage remoteMessage) {
+	Bundle data = getBundleFromRemoteMessage(remoteMessage);
 public void onMessageReceived(String from, Bundle data) {
     //ペイロードデータの取得
-    if (data.containsKey("com.nifty.Data")) {
+    if (data.containsKey("com.nifcloud.mbaas.Data")) {
         try {
-            JSONObject json = new JSONObject(data.getString("com.nifty.Data"));
+            JSONObject json = new JSONObject(data.getString("com.nifcloud.mbaas.Data"));
         } catch (JSONException e) {
             //エラー処理
             Log.e(TAG, "error:" + e.getMessage());
-        } catch (NCMBException e) {
-            Log.e(TAG, "error:" + e.getMessage());
         }
     }
-    //デフォルトの受信処理はコメントアウト
-    //super.onMessageReceived(from, data);
+    //デフォルトの通知を実行する場合はsuper.onMessageReceivedを実行する
+    //super.onMessageReceived(remoteMessage);
 }
 ```
 
@@ -247,21 +232,17 @@ public void onMessageReceived(String from, Bundle data) {
 JSONオブジェクトの作成後に続きの実装をしてください
 
 ```java
-JSONObject json = new JSONObject(data.getString("com.nifty.Data"));
-
-//SDKの再初期化が必要
-NCMB.initialize(
-    this,
-    "YOUR_APP_KEY",
-    "YOUR_CLIENT_KEY"
-);
+JSONObject json = new JSONObject(data.getString("com.nifcloud.mbaas.Data"));
 
 //Locationデータの取得
 NCMBObject point = new NCMBObject("Location");
-point.setObjectId(json.getString("location_id"));
-point.fetchObject();
-
-Log.d(TAG, "location name:" + point.getString("name"));
+try {
+    point.setObjectId(json.getString("location_id"));
+    point.fetch();
+    Log.d(TAG, "location name:" + point.getString("name"));
+} catch (NCMBException e) {
+    e.printStackTrace();
+}
 ```
 
 ### メソッドの呼び出しを追加
@@ -272,16 +253,19 @@ Log.d(TAG, "location name:" + point.getString("name"));
 - `connectGoogleApiClient()`：Google API Clientのビルドと接続
 
 ```java
-JSONObject json = new JSONObject(data.getString("com.nifty.Data"));
+JSONObject json = new JSONObject(data.getString("com.nifcloud.mbaas.Data"));
 
 //Locationデータの取得
 NCMBObject point = new NCMBObject("Location");
-point.setObjectId(json.getString("location_id"));
-point.fetchObject();
+try {
+    point.setObjectId(json.getString("location_id"));
+    point.fetch();
+    Log.d(TAG, "location name:" + point.getString("name"));
+} catch (NCMBException e) {
+    e.printStackTrace();
+}
 
-Log.d(TAG, "location name:" + point.getString("name"));
-
-//Geofenceの作成
+//geofenceの作成
 createGeofenceRequest(point);
 
 //Google API Clientのビルドと接続
