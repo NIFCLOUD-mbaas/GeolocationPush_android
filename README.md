@@ -120,29 +120,6 @@ Google Developer Consoleのプロジェクトホームを開き、プロジェ�
 
 <img src="/readme-img/project_number.png" alt="プロジェクト番号の確認">
 
-MainActivityのRegistration ID取得メソッドの引数にプロジェクト番号を設定してください
-
-```java
-//GCMからRegistrationIdを取得
-installation.getRegistrationIdInBackground("YOUR_PROJECT_NUMBER", new DoneCallback() {
-    @Override
-    public void done(NCMBException e) {
-        if (e == null) {
-            installation.saveInBackground(new DoneCallback() {
-                @Override
-                public void done(NCMBException saveErr) {
-                    if (saveErr != null) {
-                        Log.e(getLocalClassName(),"err:" + saveErr.getMessage());
-                    }
-                }
-            });
-        } else {
-            Log.e(getLocalClassName(),"error:" + e.getMessage());
-        }
-    }
-});
-```
-
 ### AndroidManifest.xmlの編集
 
 - application要素の中でパーミッションを設定
