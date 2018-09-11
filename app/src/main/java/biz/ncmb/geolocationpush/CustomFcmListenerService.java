@@ -25,7 +25,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-public class CustomGcmListenerService extends NCMBFirebaseMessagingService
+public class CustomFcmListenerService extends NCMBFirebaseMessagingService
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         ResultCallback {
 
@@ -166,7 +166,7 @@ public class CustomGcmListenerService extends NCMBFirebaseMessagingService
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, " service is destroyed...");
+        Log.d(TAG, "Fcm service is destroyed...");
         super.onDestroy();
     }
 }

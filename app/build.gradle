@@ -27,7 +27,7 @@ dependencies {
     implementation files('libs/NCMB.jar')
     implementation 'com.google.firebase:firebase-messaging:17.1.0'
     implementation 'com.google.android.gms:play-services-base:15.0.1'
-    compile 'com.google.android.gms:play-services-location:15.0.1'
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

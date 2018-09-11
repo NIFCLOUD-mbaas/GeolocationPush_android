@@ -33,7 +33,7 @@
         </activity>
 
         <service
-            android:name="biz.ncmb.geolocationpush.CustomGcmListenerService"
+            android:name="biz.ncmb.geolocationpush.CustomFcmListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>

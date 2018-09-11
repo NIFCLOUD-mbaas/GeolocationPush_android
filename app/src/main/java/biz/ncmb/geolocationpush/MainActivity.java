@@ -1,6 +1,5 @@
 package biz.ncmb.geolocationpush;
 
-import android.Manifest;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;

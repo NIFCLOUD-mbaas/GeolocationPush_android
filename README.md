@@ -137,13 +137,13 @@ Google Developer Consoleのプロジェクトホームを開き、プロジェ�
 <uses-permission android:name="biz.ncmb.geolocationpush.permission.C2D_MESSAGE" />
 ```
 
-- GcmListenerServiceを定義
+- FcmListenerServiceを定義
  - 今回は受信処理をカスタマイズするので、クラスを別で用意します
  - サンプルプロジェクトでは実施済みです
 
 ```xml
 <service
-    android:name="biz.ncmb.geolocationpush.CustomGcmListenerService"
+    android:name="biz.ncmb.geolocationpush.CustomFcmListenerService"
     android:exported="false">
     <intent-filter>
         <action android:name="com.google.firebase.MESSAGING_EVENT"/>
@@ -181,7 +181,7 @@ Google Developer Consoleのプロジェクトホームを開き、プロジェ�
 ### ロケーションの取得
 
 プッシュ通知内のデータ（ペイロード）を取得する場合は、  
-GcmListenerServiceを拡張し、`onMessageReceived`メソッドを上書きします
+FcmListenerServiceを拡張し、`onMessageReceived`メソッドを上書きします
 
 ```java
 @Override
