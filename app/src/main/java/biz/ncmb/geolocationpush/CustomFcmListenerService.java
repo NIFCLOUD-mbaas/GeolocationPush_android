@@ -16,6 +16,7 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.messaging.RemoteMessage;
+import com.nifcloud.mbaas.core.NCMB;
 import com.nifcloud.mbaas.core.NCMBException;
 import com.nifcloud.mbaas.core.NCMBFirebaseMessagingService;
 import com.nifcloud.mbaas.core.NCMBObject;
@@ -57,6 +58,13 @@ public class CustomFcmListenerService extends NCMBFirebaseMessagingService
 
                 //Locationデータの取得
                 NCMBObject point = new NCMBObject("Location");
+
+                //SDKの再初期化が必要
+                NCMB.initialize(
+                        this.getApplicationContext(),
+                        "YOUR_APP_KEY",
+                        "YOUR_CLIENT_KEY"
+                );
                 try {
                     point.setObjectId(json.getString("location_id"));
                     point.fetch();

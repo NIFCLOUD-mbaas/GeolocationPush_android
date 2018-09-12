@@ -211,6 +211,13 @@ JSONオブジェクトの作成後に続きの実装をしてください
 ```java
 JSONObject json = new JSONObject(data.getString("com.nifcloud.mbaas.Data"));
 
+//SDKの再初期化が必要
+NCMB.initialize(
+        this.getApplicationContext(),
+        "YOUR_APP_KEY",
+        "YOUR_CLIENT_KEY"
+);
+
 //Locationデータの取得
 NCMBObject point = new NCMBObject("Location");
 try {
