@@ -76,49 +76,18 @@ NCMB.initialize(
 );
 ```
 
-### GCMの有効化
-
-Google Developers Console（[https://console.developers.google.com](https://console.developers.google.com)）  
-にアクセスしてプロジェクトを作成してください
-
-<img src="/readme-img/google_api_console.png" alt="Google API Consoleの画面">
-
-左上のメニューからAPI Managerを開くと、利用できるAPIが表示されるので
-Google Cloud Messaging for Androidを有効にしてください
-
-<img src="/readme-img/google_api_console_2.png" alt="GCMを有効にする画面">
-
-### GCM用のキーを取得
-
-認証情報のメニューから認証情報を追加ボタンを押してAPIキーを選択してください
-
-<img src="/readme-img/create_api_key_1.png" alt="GCM用のキー作成画面1">
-
-以下の画面ではサーバーキーを選択してください
-
-<img src="/readme-img/create_api_key_2.png" alt="GCM用のキー作成画面2">
-
-サーバーキーの名前を入力してキーを作成してください
-
-<img src="/readme-img/create_api_key_3.png" alt="GCM用のキー作成画面3">
-
-ニフクラ  mobile backendのダッシュボードに戻ってキーを設定します
+### プッシュ通知機能を許可
 
 アプリ設定メニューからプッシュ通知の設定を開いてください
-
 - プッシュ通知機能を許可
-
 <img src="/readme-img/enable_push.png" alt="プッシュ通知の許可">
 
-- Android プッシュ通知用にAPIキー（作成したサーバーキー）を設定
+### google-service.jsonとFirebase秘密鍵の設定
 
-<img src="/readme-img/set_server_key.png" alt="サーバーキーの設定">
+FCM対応したプッシュ通知を送信する場合、google-service.jsonをアプリに配置してただくのと、Firebaseの秘密鍵をmobile backendにアップロードしていただく必要があります。
+以下のドキュメントを参考に、google-service.jsonとFirebase秘密鍵の設定を行ってください。
 
-### sender IDの設定
-
-Google Developer Consoleのプロジェクトホームを開き、プロジェクト番号を確認してください
-
-<img src="/readme-img/project_number.png" alt="プロジェクト番号の確認">
+__▼ google-service.jsonとFirebase秘密鍵の設定方法について ▼__<br>https://mbaas.nifcloud.com/doc/current/common/push_setup_fcm_json.html
 
 ### AndroidManifest.xmlの編集
 
@@ -131,10 +100,6 @@ Google Developer Consoleのプロジェクトホームを開き、プロジェ�
 <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 <uses-permission android:name="android.permission.WAKE_LOCK" />
 <uses-permission android:name="android.permission.VIBRATE" />
-<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-<permission android:name="biz.ncmb.geolocationpush.permission.C2D_MESSAGE"
-    android:protectionLevel="signature" />
-<uses-permission android:name="biz.ncmb.geolocationpush.permission.C2D_MESSAGE" />
 ```
 
 - FcmListenerServiceを定義
