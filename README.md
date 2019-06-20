@@ -70,7 +70,7 @@ MainActivityの`onCreate`メソッドにあるSDKの初期化処理を
 
 ```java
 NCMB.initialize(
-    this,
+    this.getApplicationContext(),
     "YOUR_APP_KEY",
     "YOUR_CLIENT_KEY"
 );
