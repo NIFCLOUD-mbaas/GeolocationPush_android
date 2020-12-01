@@ -6,8 +6,16 @@
 
 <img src="/readme-img/demo_app_flow.png" alt="アプリの概要">
 
-## 事前準備
+## ニフクラmobile backendとは
+スマートフォンアプリのバックエンド機能（プッシュ通知・データストア・会員管理・ファイルストア・SNS連携・位置情報検索・スクリプト）が**開発不要**、しかも基本**無料**(注1)で使えるクラウドサービス！
 
+<center><img src="readme-img/002.png" alt="画像2" width="700"></center>
+
+注1：詳しくは[こちら](https://mbaas.nifcloud.com/function.htm)をご覧ください
+
+<div style="page-break-before:always"></div>
+
+## 動作確認環境
 - ニフクラ  mobile backendの無料アカウント
 - Android Studio
  - SDK Managerを使って以下のライブラリをインストールしてください
@@ -15,28 +23,25 @@
   - Google Play Service
 - 検証用のAndroidデバイス
 
-## ニフクラ  mobile backendとは
-
-mBaaS（mobile backend as a Service）とは、スマートフォンアプリでよく利用される汎用的な機能をクラウドから提供するサービスです
-
-- プッシュ通知
- - Android / iOS向けにプッシュ通知を配信するサーバー機能
-- データストア
- - アプリのデータや端末情報を管理するデータベース機能
-- 会員管理
- - 会員情報の管理やログイン/ログアウトなど認証の仕組みを用意した機能
- - SNSアカウント(Facebook / Twitter / Google)との連携も可能
-- ファイルストア
- - アプリで利用する写真などのファイル保存できるストレージ機能
-
 ## 作業手順
 
 * 前半：プッシュ通知の受信設定
 * 後半：位置情報との連動
 
 ## 前半：プッシュ通知の受信設定
+### 1.ニフクラ mobile backendの設定
 
-### プロジェクトダウンロード
+* [ニフクラ mobile backend](https://console.mbaas.nifcloud.com)にログインしてアプリを作成
+<img src="readme-img/007.png" alt="mobile backendでのアプリ作成画面">
+
+* 以下のアプリ作成完了画面が表示されればOKです 
+
+<img src="readme-img/applicationCreated.png" alt="mobile backendでのアプリ作成完了画面">
+
+* この２種類のAPIキー（アプリケーションキーとクライアントキー）はXcodeで作成するiOSアプリにニフクラ mobile backendを紐付けるために使用します
+<img src="readme-img/APIkey.png" alt="APIの作成" width="900px">
+
+### 2. プロジェクトダウンロード
 
 下記リンクをクリックしてプロジェクトをダウンロードしてください▼
 
@@ -51,19 +56,13 @@ __[サンプルプロジェクト](https://github.com/NIFCloud-mbaas/Geolocation
 - 必要なクラスの作成
 - ハンズオンで扱わない部分の実装
 
-### Android Studioでプロジェクトを開く
+### 3. Android Studioでプロジェクトを開く
 
 - Open an existing Android Studio project
 - 解凍したzipファイルのフォルダを選択
 
-### アプリ作成
 
-- [ニフクラ  mobile backend](http://mb.cloud.nifty.com)にログインしてアプリを作成
- - 以下のアプリ作成完了画面が表示されればOKです
-
-<img src="/readme-img/applicationCreated.png" alt="mobile backendでのアプリ作成完了画面">
-
-### SDKの初期化設定
+### 4. SDKの初期化設定
 
 MainActivityの`onCreate`メソッドにあるSDKの初期化処理を  
 作成したAPIキーに書き換えてください
@@ -76,20 +75,20 @@ NCMB.initialize(
 );
 ```
 
-### プッシュ通知機能を許可
+### 5. プッシュ通知機能を許可
 
 アプリ設定メニューからプッシュ通知の設定を開いてください
 - プッシュ通知機能を許可
 <img src="/readme-img/enable_push.png" alt="プッシュ通知の許可">
 
-### google-service.jsonとFirebase秘密鍵の設定
+### 6. google-service.jsonとFirebase秘密鍵の設定
 
 FCM対応したプッシュ通知を送信する場合、google-service.jsonをアプリに配置してただくのと、Firebaseの秘密鍵をmobile backendにアップロードしていただく必要があります。
 以下のドキュメントを参考に、google-service.jsonとFirebase秘密鍵の設定を行ってください。
 
 __▼ google-service.jsonとFirebase秘密鍵の設定方法について ▼__<br>https://mbaas.nifcloud.com/doc/current/common/push_setup_fcm_json.html
 
-### AndroidManifest.xmlの編集
+### 7. AndroidManifest.xmlの編集
 
 - application要素の中でパーミッションを設定
  - サンプルプロジェクトでは実施済みです
@@ -116,7 +115,7 @@ __▼ google-service.jsonとFirebase秘密鍵の設定方法について ▼__<b
 </service>
 ```
 
-### アプリを実行してみましょう
+### 8. アプリを実行してみましょう
 
 1. アプリを起動
 2. installationを確認
@@ -125,7 +124,7 @@ __▼ google-service.jsonとFirebase秘密鍵の設定方法について ▼__<b
 
 ## 後半：位置情報との連動
 
-### ロケーションデータの設定
+### 1. ロケーションデータの設定
 
 - データストアにLocationという名前のクラスを作成
 - Locationクラスにnameとgeoフィールドを追加
@@ -136,14 +135,14 @@ __▼ google-service.jsonとFirebase秘密鍵の設定方法について ▼__<b
 
 <img src="/readme-img/datastore.png" alt="データストアの操作">
 
-### Geofence設定までの流れ
+### 2. Geofence設定までの流れ
 
 1. 受信したプッシュ通知の内容をもとにロケーションをデータストアから取得
 2. GeofenceRequestを作成
 3. Google API Clientの設定
 4. GeofenceRequestを設定
 
-### ロケーションの取得
+### 3. ロケーションの取得
 
 プッシュ通知内のデータ（ペイロード）を取得する場合は、  
 FcmListenerServiceを拡張し、`onMessageReceived`メソッドを上書きします
@@ -167,7 +166,7 @@ public void onMessageReceived(String from, Bundle data) {
 }
 ```
 
-### ロケーションの取得
+### 4. ロケーションの取得
 
 ペイロードデータ内のlocation_idをもとに、データストアからロケーションを取得します
 
@@ -194,7 +193,7 @@ try {
 }
 ```
 
-### メソッドの呼び出しを追加
+### 5. メソッドの呼び出しを追加
 
 このあと実装するメソッドの呼び出しを追加
 
@@ -221,7 +220,7 @@ createGeofenceRequest(point);
 connectGoogleApiClient();
 ```
 
-### GeofenceRequestの作成
+### 6. GeofenceRequestの作成
 
 `createGeofenceRequest`メソッドを実装していきます
 
@@ -254,7 +253,7 @@ builder.addGeofence(geofence);
 mGeofenceRequest = builder.build();
 ```
 
-### Google API Clientの設定
+### 7. Google API Clientの設定
 
 connectGoogleApiClientメソッドを実装します
 
@@ -272,7 +271,7 @@ protected synchronized void connectGoogleApiClient() {
 }
 ```
 
-### PendingIntentの作成
+### 8. PendingIntentの作成
 
 Geofenceを追加するときにPendingIntentが必要になるので、`getGeofencePendingIntent`メソッドで`PendingIntent`を返すようにします
 
@@ -289,7 +288,7 @@ private PendingIntent getGeofencePendingIntent() {
 }
 ```
 
-### Geofenceの追加
+### 9. Geofenceの追加
 
 Google API Clientの接続後に実行されるコールバック（`onConnected`メソッド）で、以前に設定したGeofenceの削除と、新規Geofenceの追加を行います
 
@@ -332,7 +331,7 @@ LocationServices.GeofencingApi.addGeofences(
 ).setResultCallback(this);
 ```
 
-### Geofenceに入った場合のハンドリング
+### 10. Geofenceに入った場合のハンドリング
 
 Geofence内での動きがあった場合は、`GeofenceTransitionsIntentService`クラスの`onHandleIntent`メソッドが呼び出されます
 
@@ -376,7 +375,7 @@ String geofenceName = triggeringGeofences.get(0).getRequestId();
 sendNotification(geofenceName);
 ```
 
-### AndroidManifest.xmlの編集
+### 11. AndroidManifest.xmlの編集
 
 - manifestの要素としてパーミッションを設定します
  - applicationの要素ではないので、注意が必要です
@@ -390,7 +389,7 @@ sendNotification(geofenceName);
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 ```
 
-### Android M で必要な作業
+### 12. Android M で必要な作業
 
 ACCESS_FINE_LOCATIONのpermissionを利用者に許可してもらう必要があります  
 （参考）[Requesting Permissions at Run Time](http://developer.android.com/intl/ja/training/permissions/requesting.html)
@@ -438,7 +437,7 @@ public void onRequestPermissionsResult(int requestCode, String[] permissions,
 }
 ```
 
-### アプリを動かしてみましょう
+### 13. アプリを動かしてみましょう
 
 - アプリを起動
 - プッシュ通知を配信するときにJSONデータを設定
