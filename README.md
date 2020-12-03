@@ -124,7 +124,7 @@ __▼ google-service.jsonとFirebase秘密鍵の設定方法について ▼__<b
 
 ## 後半：位置情報との連動
 
-### 1. ロケーションデータの設定
+### 1. 店舗情報の準備
 
 - データストアにLocationという名前のクラスを作成
 - Locationクラスにnameとgeoフィールドを追加
@@ -440,15 +440,19 @@ public void onRequestPermissionsResult(int requestCode, String[] permissions,
 ### 13. アプリを動かしてみましょう
 
 - アプリを起動
+- お店の場所(Pushを表示したい場所)の緯度と経度を検索する
+- [店舗情報の準備](https://github.com/NIFCLOUD-mbaas/GeolocationPush_android#店舗情報の準備)を参考に(1)の緯度と経度を新しいレコードとして追加します
+- デバッグ用の実機でアプリを一度起動させて、deviceTokenを登録
+    - データストアのinstallationクラスにデータが登録されたか確認
 - プッシュ通知を配信するときにJSONデータを設定
- - 登録したLocationのobjectIdを指定してください
-
+    - 登録したLocationのobjectIdを指定してください
+    - タイトルとメッセージは空白
 ```json
 {"location_id":"YOUR_LOCATION_ID"}
 ```
+  
+<img src="readme-img/005.png" alt="プッシュ通知を配信" width="800px"> </br> 
 
-- タイトルとメッセージは空白
-
-Geolocation Pushが受信されましたか？  
+※ Geolocation Pushが受信されましたか？  
 （通知がすぐ表示されるので実感がありませんが、すでに領域内にいるためです）
 （帰り道のロケーションを追加して、通知が表示されるか試してみてください）
