@@ -11,10 +11,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.nifty.cloud.mb.core.DoneCallback;
-import com.nifty.cloud.mb.core.NCMB;
-import com.nifty.cloud.mb.core.NCMBException;
-import com.nifty.cloud.mb.core.NCMBInstallation;
+import com.nifcloud.mbaas.core.NCMB;
+import com.nifcloud.mbaas.core.NCMBInstallation;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         //表示されている通知の削除
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancelAll();
@@ -36,25 +34,6 @@ public class MainActivity extends AppCompatActivity {
         );
 
         final NCMBInstallation installation = NCMBInstallation.getCurrentInstallation();
-
-        //GCMからRegistrationIdを取得
-        installation.getRegistrationIdInBackground("YOUR_PROJECT_NUMBER", new DoneCallback() {
-            @Override
-            public void done(NCMBException e) {
-                if (e == null) {
-                    installation.saveInBackground(new DoneCallback() {
-                        @Override
-                        public void done(NCMBException saveErr) {
-                            if (saveErr != null) {
-                                Log.e(getLocalClassName(),"error:" + saveErr.getMessage());
-                            }
-                        }
-                    });
-                } else {
-                    Log.e(getLocalClassName(),"error:" + e.getMessage());
-                }
-            }
-        });
 
         //Android 6.0向けのアプリ実行時パーミッション許可画面表示
         if (ContextCompat.checkSelfPermission(this,
@@ -74,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
     //パーミッション許可画面からのハンドリング
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults)
-    {
+                                           int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.

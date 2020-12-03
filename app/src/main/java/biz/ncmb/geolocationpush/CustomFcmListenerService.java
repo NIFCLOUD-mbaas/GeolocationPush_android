@@ -1,6 +1,7 @@
 package biz.ncmb.geolocationpush;
 
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,20 +15,20 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
-import com.nifty.cloud.mb.core.NCMB;
-import com.nifty.cloud.mb.core.NCMBException;
-import com.nifty.cloud.mb.core.NCMBGcmListenerService;
-import com.nifty.cloud.mb.core.NCMBObject;
+import com.google.firebase.messaging.RemoteMessage;
+import com.nifcloud.mbaas.core.NCMB;
+import com.nifcloud.mbaas.core.NCMBException;
+import com.nifcloud.mbaas.core.NCMBFirebaseMessagingService;
+import com.nifcloud.mbaas.core.NCMBObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
 
-public class CustomGcmListenerService extends NCMBGcmListenerService
+public class CustomFcmListenerService extends NCMBFirebaseMessagingService
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        ResultCallback
-{
+        ResultCallback {
 
     protected static final String TAG = "CustomListenerService";
 
@@ -47,19 +48,30 @@ public class CustomGcmListenerService extends NCMBGcmListenerService
     private GeofencingRequest mGeofenceRequest;
 
     @Override
-    public void onMessageReceived(String from, Bundle data) {
+    public void onMessageReceived(RemoteMessage remoteMessage) {
+        Bundle data = getBundleFromRemoteMessage(remoteMessage);
 
         //ペイロードデータの取得
-        if (data.containsKey("com.nifty.Data")) {
+        if (data.containsKey("com.nifcloud.mbaas.Data")) {
             try {
-                JSONObject json = new JSONObject(data.getString("com.nifty.Data"));
+                JSONObject json = new JSONObject(data.getString("com.nifcloud.mbaas.Data"));
 
                 //Locationデータの取得
                 NCMBObject point = new NCMBObject("Location");
-                point.setObjectId(json.getString("location_id"));
-                point.fetch();
 
-                Log.d(TAG, "location name:" + point.getString("name"));
+                //SDKの再初期化が必要
+                NCMB.initialize(
+                        this.getApplicationContext(),
+                        "YOUR_APP_KEY",
+                        "YOUR_CLIENT_KEY"
+                );
+                try {
+                    point.setObjectId(json.getString("location_id"));
+                    point.fetch();
+                    Log.d(TAG, "location name:" + point.getString("name"));
+                } catch (NCMBException e) {
+                    e.printStackTrace();
+                }
 
                 //geofenceの作成
                 createGeofenceRequest(point);
@@ -67,19 +79,15 @@ public class CustomGcmListenerService extends NCMBGcmListenerService
                 //Google API Clientのビルドと接続
                 connectGoogleApiClient();
 
-
             } catch (JSONException e) {
                 //エラー処理
-                Log.e(TAG, "error:" + e.getMessage());
-            } catch (NCMBException e) {
                 Log.e(TAG, "error:" + e.getMessage());
             }
         }
 
-        //デフォルトの通知を実行する場合はsuper.onMessageReceivedを実行する
-        //super.onMessageReceived(from, data);
+        // デフォルトの通知を実行する場合はsuper.onMessageReceivedを実行する
+        // super.onMessageReceived(remoteMessage);
     }
-
 
     protected synchronized void connectGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -121,6 +129,7 @@ public class CustomGcmListenerService extends NCMBGcmListenerService
                 FLAG_UPDATE_CURRENT);
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onConnected(Bundle bundle) {
         Log.d(TAG, "Connection Succeeded.");
@@ -165,7 +174,7 @@ public class CustomGcmListenerService extends NCMBGcmListenerService
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "Gcm service is destroyed...");
+        Log.d(TAG, "Fcm service is destroyed...");
         super.onDestroy();
     }
 }
