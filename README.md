@@ -19,7 +19,6 @@
 - ニフクラ  mobile backendの無料アカウント
 - Android Studio
  - SDK Managerを使って以下のライブラリをインストールしてください
-  - Android Support Library
   - Google Play Service
 - 検証用のAndroidデバイス
 
@@ -386,7 +385,9 @@ sendNotification(geofenceName);
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="biz.ncmb.geolocationpush" >
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 ```
 
 ### 12. Android M で必要な作業
@@ -407,7 +408,7 @@ if (ContextCompat.checkSelfPermission(this,
             android.Manifest.permission.ACCESS_FINE_LOCATION)) {
     } else {
         ActivityCompat.requestPermissions(this,
-                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                 MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
     }
 }
