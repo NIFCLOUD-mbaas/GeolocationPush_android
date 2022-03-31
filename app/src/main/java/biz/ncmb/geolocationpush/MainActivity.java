@@ -1,30 +1,28 @@
 package biz.ncmb.geolocationpush;
 
+import android.Manifest;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.nifty.cloud.mb.core.DoneCallback;
-import com.nifty.cloud.mb.core.NCMB;
-import com.nifty.cloud.mb.core.NCMBException;
-import com.nifty.cloud.mb.core.NCMBInstallation;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import com.nifcloud.mbaas.core.NCMB;
 
 public class MainActivity extends AppCompatActivity {
 
-    static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 34;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         //表示されている通知の削除
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancelAll();
@@ -34,48 +32,21 @@ public class MainActivity extends AppCompatActivity {
                 "YOUR_APP_KEY",
                 "YOUR_CLIENT_KEY"
         );
+    }
 
-        final NCMBInstallation installation = NCMBInstallation.getCurrentInstallation();
+    @Override
+    public void onStart() {
+        super.onStart();
 
-        //GCMからRegistrationIdを取得
-        installation.getRegistrationIdInBackground("YOUR_PROJECT_NUMBER", new DoneCallback() {
-            @Override
-            public void done(NCMBException e) {
-                if (e == null) {
-                    installation.saveInBackground(new DoneCallback() {
-                        @Override
-                        public void done(NCMBException saveErr) {
-                            if (saveErr != null) {
-                                Log.e(getLocalClassName(),"error:" + saveErr.getMessage());
-                            }
-                        }
-                    });
-                } else {
-                    Log.e(getLocalClassName(),"error:" + e.getMessage());
-                }
-            }
-        });
-
-        //Android 6.0向けのアプリ実行時パーミッション許可画面表示
-        if (ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION)) {
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-            }
+        if (!checkPermissions()) {
+            requestPermissions();
         }
     }
 
     //パーミッション許可画面からのハンドリング
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults)
-    {
+                                           int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
@@ -87,6 +58,25 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return;
             }
+        }
+    }
+
+    private boolean checkPermissions() {
+        int permissionState = ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        return permissionState == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermissions() {
+        boolean shouldProvideRationale =
+                ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if (shouldProvideRationale) {
+        } else {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
     }
 
